@@ -1,0 +1,18 @@
+[project]
+name = "pdf-summ-coxit"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+
+dependencies = [
+    "termcolor>=2.5.0",
+]
+
+[tool.uv.workspace]
+members = [
+    "src/core",
+]
+
+[tool.uv.sources]
+core = { workspace = true }
