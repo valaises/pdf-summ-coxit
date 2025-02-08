@@ -1,1 +1,1 @@
-uv run src/core/main.py
+uv run src/core/main.py -d target_dir
