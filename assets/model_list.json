@@ -10,5 +10,17 @@
       "tpm": 30000,
       "rpm": 500
     }
+  },
+  {
+    "gemini-2.0-flash": {
+      "provider": "google",
+      "resolve_as": "gemini/gemini-2.0-flash",
+      "context_window": 1000000,
+      "max_output_tokens": 32000,
+      "price_points_input": 100,
+      "price_points_output": 400,
+      "tpm": 4000000,
+      "rpm": 2000
+    }
   }
 ]

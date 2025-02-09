@@ -30,7 +30,7 @@ def process_pdf(doc: PDFDocument):
             pdf_bytes = memory_file.getvalue()
             base64_pdf = base64.b64encode(pdf_bytes).decode('utf-8')
 
-            page_data = PDFPageData(base64_pdf, page_num)
+            page_data = PDFPageData(base64_pdf, page_num + 1, doc.path)
             page.data = page_data
 
             memory_file.close()

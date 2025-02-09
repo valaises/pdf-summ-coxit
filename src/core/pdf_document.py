@@ -13,6 +13,7 @@ class PDFError:
 class PDFPageData:
     b64_data: str
     page_num: int
+    parent_path: Path
 
 
 class PDFBase:

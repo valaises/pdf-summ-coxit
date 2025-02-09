@@ -4,6 +4,7 @@ requires-python = ">=3.12"
 [manifest]
 members = [
     "core",
+    "llm-completion",
     "pdf-summ-coxit",
 ]
 
@@ -416,6 +417,11 @@ sdist = { url = "https://files.pythonhosted.org/packages/71/55/e72b020b56064ef1a
 wheels = [
     { url = "https://files.pythonhosted.org/packages/70/a9/20e8f8674943f748d477f7c8e7259c6a0e3fe03ce9687bdb84cf03d1d8c7/litellm-1.60.8-py3-none-any.whl", hash = "sha256:260bdcc9749c769f1a84dc927abe7c91f6294a97da05abc6b513c5dd2dcf17a1", size = 6763571 },
 ]
+
+[[package]]
+name = "llm-completion"
+version = "0.1.0"
+source = { virtual = "src/llm_completion" }
 
 [[package]]
 name = "markupsafe"

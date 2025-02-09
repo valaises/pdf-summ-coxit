@@ -18,7 +18,7 @@ class ChatMessage:
     tool_calls: Optional[List[Dict[str, Any]]] = None
     tool_call_id: Optional[str] = None
 
-    def as_dict(self):
+    def as_dict(self) -> Dict[str, Any]:
         d = {
             "role": self.role,
             "content": self.content,
