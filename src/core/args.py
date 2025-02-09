@@ -8,7 +8,7 @@ from pathlib import Path
 from logger import init_logger, info, error
 
 
-__all__ = ["parse_args"]
+__all__ = ["Args", "parse_args"]
 
 
 @dataclass

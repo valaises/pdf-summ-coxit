@@ -2,7 +2,7 @@ import time
 import threading
 from pathlib import Path
 from queue import Queue
-from typing import Tuple, Iterator
+from typing import Iterator
 
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
@@ -10,11 +10,13 @@ from watchdog.observers import Observer
 from logger import info
 
 
-__all__ = ["start_watchdog"]
+__all__ = ["spawn_watchdog"]
+
+FILE_RULE = "*.pdf"
 
 
 def scan_existing_files(directory: Path) -> Iterator[Path]:
-    for file_path in directory.rglob('*'):
+    for file_path in directory.rglob(FILE_RULE):
         if file_path.is_file():
             yield file_path
 
@@ -25,7 +27,9 @@ class EventHandler(FileSystemEventHandler):
         self.queue = queue
 
     def on_created(self, event: FileSystemEvent) -> None:
-        self.queue.put(event.src_path)
+        path = Path(event.src_path)
+        if path.match(FILE_RULE):
+            self.queue.put(event.src_path)
 
 
 def watchdog_worker(target_dir: Path, queue: Queue, stop_event: threading.Event):
@@ -41,18 +45,17 @@ def watchdog_worker(target_dir: Path, queue: Queue, stop_event: threading.Event)
         observer.join()
 
 
-def start_watchdog(target_dir: Path) -> Tuple[Queue, threading.Event]:
-    queue = Queue()
+def spawn_watchdog(q: Queue, target_dir: Path) -> threading.Event:
     stop_event = threading.Event()
 
-    [queue.put(f) for f in scan_existing_files(target_dir)]
+    [q.put(f) for f in scan_existing_files(target_dir)]
 
     watchdog_thread = threading.Thread(
         target=watchdog_worker,
-        args=(target_dir, queue, stop_event),
+        args=(target_dir, q, stop_event),
         daemon=True
     )
     watchdog_thread.start()
     info("watchdog initialized")
 
-    return queue, stop_event
+    return stop_event
