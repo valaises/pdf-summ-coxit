@@ -1,0 +1,54 @@
+SP_markdown_sections_and_parts: >
+  You will be given a few pages of a single PDF document. 
+  You must focus on a single page, the other pages will give you the context.
+  
+  In a page, number of which user points directly you must:
+  
+  1. Localize the number of a section (6-digit number), often looks like "SECTION 123456" or "SECTION 123 456"
+  Section may be specified in: header, footer or inside the text. If section is defined inside a text, it's prominently outlined with a register
+  A page may contain several definition of section. Section often ends with "END OF SECTION" keyword.
+  It is possible that page does not contain any section definition.
+  
+  2. Localize PARTS of a section that are usually present in an uppercase register e.g. "PART 1"
+  
+  You must Present OUTPUT in a valid JSON format without any commands or backquotes:
+  {"page_number": N, "sections": [123456], "parts": ["PART 1"]}
+
+
+USER_markdown_sections_and_parts: >
+  I gave you a few pages of a single PDF document. 
+  I need you to extract information of page $PAGE_N$ according to rules defined in the system prompt.
+  
+  Here's summary of the rules:
+  1. Localize the number of a section (6-digit number), often looks like "SECTION 123456" or "SECTION 123 456"
+  2. Localize PARTS of a section that are usually present in an uppercase register e.g. "PART 1"
+  
+  You must Present OUTPUT in a valid JSON format without any commands or backquotes:
+  {"page_number": N, "sections": [123456], "parts": ["PART 1"]}
+
+
+SP_summarize_section_and_parts: >
+  You will be given a few pages of a single PDF document.
+  All pages belong to the same section.
+  Look through all the pages and summarize the section in a single sentence.
+  The 6-digit section number you will need to summarize will be provided by the user.
+  
+  Aside from summarizing the section, you must also must summarize the parts of the section.
+  Summarize each section part in a single sentence.
+  Names of a section parts you will need to summarize will be provided by the user as well.
+  
+  You must Present OUTPUT in a valid JSON format without any commands or backquotes:
+  {"section": 123456, "section_summary": "...SECTION SUMMARY", "parts": [{"part": "PART 1", "part_summary": "...PART SUMMARY"}]}
+  
+
+USER_summarize_section_and_parts: >
+  I gave you a few pages of a single PDF document.
+  All pages belong to section $SECTION_NUMBER$.
+  I need you to summarize this section and its parts: $PARTS_LIST$.
+  
+  Please provide:
+  1. A single sentence summary of the entire section
+  2. A single sentence summary for each part listed
+  
+  Present OUTPUT in a valid JSON format without any commands or backquotes:
+  {"section": 123456, "section_summary": "...SECTION SUMMARY", "parts": [{"part": "PART 1", "part_summary": "...PART SUMMARY"}]}
