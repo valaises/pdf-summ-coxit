@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 
 dependencies = [
+    "litellm>=1.60.8",
     "pypdf>=5.2.0",
     "termcolor>=2.5.0",
     "watchdog>=6.0.0",
@@ -13,8 +14,9 @@ dependencies = [
 
 [tool.uv.workspace]
 members = [
-    "src/core",
+    "src/core", "src/llm_completion",
 ]
 
 [tool.uv.sources]
 core = { workspace = true }
+llm_completion = { workspace = true }

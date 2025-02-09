@@ -1,0 +1,7 @@
+[
+  {
+    "openai": {
+      "env": "OPENAI_API_KEY"
+    }
+  }
+]

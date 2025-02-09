@@ -1,0 +1,14 @@
+[
+  {
+    "gpt-4o": {
+      "provider": "openai",
+      "resolve_as": "gpt-4o-2024-11-20",
+      "context_window": 128000,
+      "max_output_tokens": 16384,
+      "price_points_input": 2500,
+      "price_points_output": 10000,
+      "tpm": 30000,
+      "rpm": 500
+    }
+  }
+]

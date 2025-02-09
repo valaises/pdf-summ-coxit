@@ -9,6 +9,8 @@ from pdf_document import PDFDocument, PDFError, PDFPage, PDFPageData
 
 
 def process_pdf(doc: PDFDocument):
+    time_start = time.time()
+
     try:
         reader = PdfReader(doc.path)
     except Exception as e:
@@ -16,8 +18,6 @@ def process_pdf(doc: PDFDocument):
         warn(f"{err.text}\nERROR: {e}")
         doc.errors.append(err)
         return
-
-    time_start = time.time()
 
     for page_num in range(len(reader.pages)):
         page = PDFPage()
