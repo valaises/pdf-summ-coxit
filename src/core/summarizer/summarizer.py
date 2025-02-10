@@ -1,6 +1,7 @@
 import asyncio
 import queue
 import threading
+from copy import copy
 
 from queue import Queue
 from typing import List, Iterable
@@ -16,16 +17,19 @@ from llm_completion.models import ModelInfo
 __all__ = ['spawn_summarizer']
 
 
-async def process_ticket(ticket: SummarizeTicket, model_list: List[ModelInfo]):
+async def process_ticket(q, ticket: SummarizeTicket, model_list: List[ModelInfo]):
     data = []
     stream = await llm_completion(ticket.post, model_list)
     async for chunk in stream:
         data.append(chunk)
 
+    print(data)
+    ticket.pp(ticket, data, q)
 
-async def summarize_batch(items: Iterable[SummarizeTicket], model_list: List[ModelInfo]):
+
+async def summarize_batch(q, items: Iterable[SummarizeTicket], model_list: List[ModelInfo]):
     await asyncio.gather(*[
-        process_ticket(item, model_list) for item in items
+        process_ticket(q, item, model_list) for item in items
     ])
 
 
@@ -53,7 +57,9 @@ def summarize_worker(
                 continue
 
             if items:
-                loop.run_until_complete(summarize_batch(items, model_list))
+                loop.run_until_complete(summarize_batch(q, copy(items), model_list))
+                items.clear()
+
     finally:
         loop.close()
 

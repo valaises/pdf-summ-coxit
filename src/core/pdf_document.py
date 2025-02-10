@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional, Iterator, List
+from typing import Optional, Iterator, List, Dict, Any
 
 
 @dataclass
@@ -22,6 +22,10 @@ class PDFPageDataStep1:
     parts: List[str] = field(default_factory=list)
     attempts_left: int = 3
     success: bool = False
+
+    def print(self):
+        print(f"sections: {self.sections}")
+        print(f"parts: {self.parts}")
 
 
 class PDFBase:
@@ -60,6 +64,8 @@ class PDFDocument(PDFBase):
         self.path = path
         self.pages_cnt = 0
         self.data_step2: List[PDFDocumentDataItemStep2] = []
+        self.step1_set: bool = False
+        self.step2_set: bool = False
         self.__head: Optional[PDFPage] = None
 
     def insert_page(self, page: PDFPage) -> None:

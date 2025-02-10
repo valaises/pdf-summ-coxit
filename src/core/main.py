@@ -28,21 +28,24 @@ def main():
     s_stop_event = spawn_summarizer(summ_q, model_list)
 
     documents = []
+
     try:
         while True:
             try:
                 file_path = process_q.get(timeout=0.5)
+
                 doc = PDFDocument(file_path)
                 info(f"processing PDF {doc.path.name} ...")
                 process_pdf(doc)
+
                 if doc.has_unrecoverable_errors():
                     warn(f"PDF {doc.path.name} has unrecoverable errors. SKIPPING")
                     continue
+                if any([p.has_unrecoverable_errors() for p in doc]):
+                    warn(f"Some pages in {doc.path.name} have unrecoverable errors. SKIPPING the document")
+                    continue
 
-                [
-                    summ_q.put(create_ticket_step1(page, prompts))
-                    for page in doc
-                ]
+                [summ_q.put(create_ticket_step1(page, prompts)) for page in doc]
 
                 documents.append(doc)
 
@@ -50,8 +53,11 @@ def main():
                 pass
 
             for doc in documents:
-                if doc.step1_done():
-                    pass
+                if doc.step1_done() and not doc.step1_set:
+                    for page in doc:
+                        info(f"Page {page.data.page_num}")
+                        info(page.data_step1.print())
+                        doc.step1_set = True
 
                 if doc.step2_done():
                     pass

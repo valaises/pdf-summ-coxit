@@ -29,7 +29,7 @@ class EventHandler(FileSystemEventHandler):
     def on_created(self, event: FileSystemEvent) -> None:
         path = Path(event.src_path)
         if path.match(FILE_RULE):
-            self.queue.put(event.src_path)
+            self.queue.put(Path(event.src_path))
 
 
 def watchdog_worker(target_dir: Path, queue: Queue, stop_event: threading.Event):

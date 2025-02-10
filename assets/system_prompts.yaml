@@ -1,10 +1,9 @@
 SP_markdown_sections_and_parts: >
-  You will be given a few pages of a single PDF document. 
-  You must focus on a single page, the other pages will give you the context.
+  You will be given a few pages of a single PDF document for the context
   
-  In a page, number of which user points directly you must:
-  
-  1. Localize the number of a section (6-digit number), often looks like "SECTION 123456" or "SECTION 123 456"
+  Then, user will give you a single page, in which:
+    
+  1. Localize the number of a section (6-digit number), often looks like "SECTION 123456" or "SECTION 123 456" or "SECTION 12 34 56"
   Section may be specified in: header, footer or inside the text. If section is defined inside a text, it's prominently outlined with a register
   A page may contain several definition of section. Section often ends with "END OF SECTION" keyword.
   It is possible that page does not contain any section definition.
@@ -12,19 +11,29 @@ SP_markdown_sections_and_parts: >
   2. Localize PARTS of a section that are usually present in an uppercase register e.g. "PART 1"
   
   You must Present OUTPUT in a valid JSON format without any commands or backquotes:
-  {"page_number": N, "sections": [123456], "parts": ["PART 1"]}
+  {"page_number": N, "sections": ["123456"], "parts": ["PART 1 - Part Name"]}
 
 
 USER_markdown_sections_and_parts: >
-  I gave you a few pages of a single PDF document. 
-  I need you to extract information of page $PAGE_N$ according to rules defined in the system prompt.
+  I already sent you a few pages of a single PDF document for the context
+  Here's a single TARGET page, in which:
   
   Here's summary of the rules:
-  1. Localize the number of a section (6-digit number), often looks like "SECTION 123456" or "SECTION 123 456"
-  2. Localize PARTS of a section that are usually present in an uppercase register e.g. "PART 1"
+  1. Localize the number of a section (6-digit number), often looks like "SECTION 123456" or "SECTION 123 456" or "SECTION 12 34 56"
+  2. Localize PARTS of a section that are usually present in an uppercase register e.g. "PART N", where N -- integer
   
-  You must Present OUTPUT in a valid JSON format without any commands or backquotes:
-  {"page_number": N, "sections": [123456], "parts": ["PART 1"]}
+  Section must always contain a ALWAYS 6-digit number.
+    
+  You put PART in parts when:
+  * you see heading "PART X", followed by part name
+  
+  Additional rules:
+  * you must IGNORE page_n in documents. Trust only what comes in text from user
+  * rather miss section number than input an incorrect section number
+  * only add section if you are 100% SURE about it 
+    
+  Your OUTPUT must be ONLY a valid JSON format without any commands or backquotes or explanations, as your output will be read by a machine, use double quotes:
+  {"page_number": N, "sections": ["123456"], "parts": ["PART 1 - Part Name"]}
 
 
 SP_summarize_section_and_parts: >
