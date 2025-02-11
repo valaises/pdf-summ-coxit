@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 
-from logger import init_logger, info, error
+from core.logger import init_logger, info, error
 
 
 __all__ = ["Args", "parse_args"]

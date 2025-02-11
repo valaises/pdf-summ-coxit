@@ -2,20 +2,16 @@ import json
 import re
 
 from dataclasses import dataclass
-from json import JSONDecodeError
 from queue import Queue
 from typing import List, Dict, Any
 
-from core.globals import SUMMARIZER_MODEL
+from core.globals import SUMMARIZER_MODEL, STEP1_DUMP_FILE
 from core.logger import warn
-from core.pdf_document import PDFPage
+from core.pdf_document import PDFPage, PDFDocument
 from core.prompts import Prompts
 from core.summarizer.summ_utils import SummarizeTicket, create_page_message, most_frequent, create_content_pdf
 
 from llm_completion.completion import CompletionPost, ChatMessage
-
-
-__all__ = ["SummarizeStep1Ticket", "create_ticket_step1"]
 
 
 @dataclass
@@ -37,11 +33,7 @@ def pp(ticket: SummarizeStep1Ticket, res: List[Dict[str, Any]], q: Queue):
         try:
             content = ch["message"]["content"]
             content = content.replace("```json\n", "").replace("\n```", "")
-            try:
-                d = json.loads(content)
-            except JSONDecodeError as e:
-                print(f"JSONDecodeError: {e};\nResponse:\n{content}")
-                raise e
+            d = json.loads(content)
 
             ch_page_number = d["page_number"]
             ch_sections = d["sections"]
@@ -106,7 +98,8 @@ def create_ticket_step1(
             break
         messages.append(create_page_message(current))
 
-    messages.append(create_page_message(page))
+    if pages_before and pages_after:
+        messages.append(create_page_message(page))
 
     current = page
     for _ in range(pages_after):
@@ -130,6 +123,56 @@ def create_ticket_step1(
         stream=False,
         max_tokens=8192,
         n=8, # WARNING: not all models support N > 1
+        temperature=0.6,
     )
 
     return SummarizeStep1Ticket(pp, post, page)
+
+
+def post_step1_heuristics(doc: PDFDocument):
+    for page in doc:
+        page.data_step1.sections = list(set(page.data_step1.sections))
+        page.data_step1.parts = list(set(page.data_step1.parts))
+
+        if not page.data_step1.sections:
+            if prev := page.prev:
+                page.data_step1.sections = prev.data_step1.sections
+
+    for page in doc:
+        if (prev := page.prev) and (next_ := page.next):
+            if set(prev.data_step1.sections) == set(next_.data_step1.sections) != set(page.data_step1.sections):
+                page.data_step1.sections = prev.data_step1.sections
+
+    section_n = 0
+    for idx, page in enumerate(doc, 1):
+        if idx == 1:
+            pass
+
+        elif any(["PART 1" in p for p in page.data_step1.parts]):
+            section_n += 1
+
+        elif prev := page.prev:
+            if prev.data_step1.sections != page.data_step1.sections:
+                section_n += 1
+
+        page.data_step1.section_n = section_n
+
+
+def dump_step1_results(doc: PDFDocument):
+    data = {
+        "file_path": str(doc.path),
+        "file_name": doc.path.name,
+        "pages_cnt": doc.pages_cnt,
+        "sections": list(set([p for page in doc for p in page.data_step1.sections])),
+        "pages": [
+            {
+                "page_num": page.data.page_num,
+                "sections": page.data_step1.sections,
+                "section_n": page.data_step1.section_n,
+            } for page in doc
+        ]
+    }
+    print(data)
+
+    with STEP1_DUMP_FILE.open("a") as f:
+        f.write(json.dumps(data) + "\n")

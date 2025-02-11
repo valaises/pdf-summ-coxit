@@ -32,32 +32,28 @@ USER_markdown_sections_and_parts: >
   * rather miss section number than input an incorrect section number
   * only add section if you are 100% SURE about it 
     
-  Your OUTPUT must be ONLY a valid JSON format without any commands or backquotes or explanations, as your output will be read by a machine, use double quotes:
+  Your OUTPUT must be ONLY a valid JSON format without any commands or backquotes or explanations, as your output will be read by a machine:
   {"page_number": N, "sections": ["123456"], "parts": ["PART 1 - Part Name"]}
 
 
 SP_summarize_section_and_parts: >
-  You will be given a few pages of a single PDF document.
-  All pages belong to the same section.
-  Look through all the pages and summarize the section in a single sentence.
-  The 6-digit section number you will need to summarize will be provided by the user.
+  User will give you N pages of the same documents.
+  All pages belong to the same section in the document
   
-  Aside from summarizing the section, you must also must summarize the parts of the section.
-  Summarize each section part in a single sentence.
-  Names of a section parts you will need to summarize will be provided by the user as well.
+  You'll need to:
+  1. Summarize the section (all pages) in one sentence
+  2. Localize other Level-1 parts and summarize them as well (one sentence for each)
   
-  You must Present OUTPUT in a valid JSON format without any commands or backquotes:
-  {"section": 123456, "section_summary": "...SECTION SUMMARY", "parts": [{"part": "PART 1", "part_summary": "...PART SUMMARY"}]}
+  Your OUTPUT must be ONLY a valid JSON format without any commands or backquotes or explanations, as your output will be read by a machine:
+  {"section_summary": "...", "parts": [{"part_name": "PART 1 - XXX", "part_summary": "..."}]}
   
 
 USER_summarize_section_and_parts: >
-  I gave you a few pages of a single PDF document.
-  All pages belong to section $SECTION_NUMBER$.
-  I need you to summarize this section and its parts: $PARTS_LIST$.
+  I provided you with pages of the same document that belongs to the same section
   
-  Please provide:
-  1. A single sentence summary of the entire section
-  2. A single sentence summary for each part listed
+  What you need to do is:
+  1. Summarize the section (all pages) in one sentence
+  2. Localize other Level-1 parts and summarize them as well (one sentence for each)
   
-  Present OUTPUT in a valid JSON format without any commands or backquotes:
-  {"section": 123456, "section_summary": "...SECTION SUMMARY", "parts": [{"part": "PART 1", "part_summary": "...PART SUMMARY"}]}
+  Your OUTPUT must be ONLY a valid JSON format without any commands or backquotes or explanations, as your output will be read by a machine:
+  {"section_summary": "...", "parts": [{"part_name": "PART 1 - XXX", "part_summary": "..."}]}

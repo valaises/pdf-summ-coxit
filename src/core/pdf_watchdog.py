@@ -7,7 +7,7 @@ from typing import Iterator
 from watchdog.events import FileSystemEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
-from logger import info
+from core.logger import info
 
 
 __all__ = ["spawn_watchdog"]

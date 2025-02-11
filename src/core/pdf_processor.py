@@ -4,8 +4,8 @@ import time
 from pypdf import PdfReader, PdfWriter
 from io import BytesIO
 
-from logger import warn, info
-from pdf_document import PDFDocument, PDFError, PDFPage, PDFPageData
+from core.logger import warn, info
+from core.pdf_document import PDFDocument, PDFError, PDFPage, PDFPageData
 
 
 def process_pdf(doc: PDFDocument):

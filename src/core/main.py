@@ -2,14 +2,16 @@ import queue
 
 from queue import Queue
 
-from args import parse_args
+from core.args import parse_args
 from core.globals import BASE_DIR
-from core.summarizer.step1 import create_ticket_step1
+from core.summarizer.step1 import create_ticket_step1, post_step1_heuristics, dump_step1_results
+from core.summarizer.step2 import dump_step2_results, create_ticket_step2
 from core.summarizer.summarizer import spawn_summarizer
-from logger import init_logger, info, warn
-from pdf_watchdog import spawn_watchdog
-from pdf_processor import process_pdf, PDFDocument
-from prompts import load_prompts
+from core.utils import clear_dump_files
+from core.logger import init_logger, info, warn
+from core.pdf_watchdog import spawn_watchdog
+from core.pdf_processor import process_pdf, PDFDocument
+from core.prompts import load_prompts
 
 from llm_completion.models import get_model_list
 
@@ -19,6 +21,7 @@ def main():
     args = parse_args(BASE_DIR)
     init_logger(args.DEBUG)
     info("logger initialized")
+    clear_dump_files()
 
     model_list = get_model_list(BASE_DIR)
     prompts = load_prompts(BASE_DIR)
@@ -54,13 +57,25 @@ def main():
 
             for doc in documents:
                 if doc.step1_done() and not doc.step1_set:
-                    for page in doc:
-                        info(f"Page {page.data.page_num}")
-                        info(page.data_step1.print())
-                        doc.step1_set = True
+                    post_step1_heuristics(doc)
+                    dump_step1_results(doc)
+                    doc.step1_set = True
+
+                    sections = {p.data_step1.section_n for p in doc}
+                    for s_n in sections:
+                        page = [page for page in doc if page.data_step1.section_n == s_n][-1]
+                        s_name = page.data_step1.sections[0]
+                        ticket = create_ticket_step2(doc, prompts, s_n, s_name)
+                        summ_q.put(ticket)
+
+                    # for page in doc: # only for debug
+                    #     info(f"Page {page.data.page_num}")
+                    #     info(page.data_step1.print())
 
                 if doc.step2_done():
-                    pass
+                    dump_step2_results(doc)
+                    documents.remove(doc)
+                    info(f"Document {doc.path.name} was processed")
 
 
     except KeyboardInterrupt:

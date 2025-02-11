@@ -19,7 +19,7 @@ def create_content_pdf(p: PDFPage) -> Dict[str, str]:
 
 def create_page_message(p: PDFPage) -> ChatMessage:
     return ChatMessage(role="user", content=[
-        {"type": "text", "content": f"PDF document for the Context, page {p.data.page_num}"},
+        {"type": "text", "content": f"PDF document page for the Context, page #{p.data.page_num}"},
         create_content_pdf(p)
     ])
 
@@ -31,4 +31,3 @@ def most_frequent(items: List[Any]) -> Any:
     str_items = [str(item) for item in items]
     most_common = Counter(str_items).most_common(1)[0][0]
     return eval(most_common)
-

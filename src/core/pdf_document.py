@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional, Iterator, List, Dict, Any
+from typing import Optional, Iterator, List
 
 
 @dataclass
@@ -18,10 +18,10 @@ class PDFPageData:
 
 @dataclass
 class PDFPageDataStep1:
-    sections: List[int] = field(default_factory=list)
+    sections: List[str] = field(default_factory=list)
     parts: List[str] = field(default_factory=list)
-    attempts_left: int = 3
     success: bool = False
+    section_n: Optional[int] = None
 
     def print(self):
         print(f"sections: {self.sections}")
@@ -53,7 +53,8 @@ class PDFDocumentDataItemStep2Part:
 
 @dataclass
 class PDFDocumentDataItemStep2:
-    section: int
+    section: str
+    section_n: int
     section_summary: str
     parts: List[PDFDocumentDataItemStep2Part] = field(default_factory=list)
 
@@ -65,7 +66,6 @@ class PDFDocument(PDFBase):
         self.pages_cnt = 0
         self.data_step2: List[PDFDocumentDataItemStep2] = []
         self.step1_set: bool = False
-        self.step2_set: bool = False
         self.__head: Optional[PDFPage] = None
 
     def insert_page(self, page: PDFPage) -> None:
@@ -89,9 +89,9 @@ class PDFDocument(PDFBase):
             current = current.next
 
     def step1_done(self) -> bool:
-        return all([page.data_step1.success or page.data_step1.attempts_left == 0 for page in self])
+        return all([page.data_step1.success for page in self])
 
     def step2_done(self) -> bool:
-        all_sections = {p for page in self for p in page.data_step1.sections}
-        processed_sections = {item.section for item in self.data_step2}
-        return len(all_sections & processed_sections) == len(all_sections)
+        all_sections = {page.data_step1.section_n for page in self}
+        processed_sections = {d.section_n for d in self.data_step2}
+        return all_sections == processed_sections
