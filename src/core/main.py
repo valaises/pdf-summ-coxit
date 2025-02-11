@@ -68,10 +68,6 @@ def main():
                         ticket = create_ticket_step2(doc, prompts, s_n, s_name)
                         summ_q.put(ticket)
 
-                    # for page in doc: # only for debug
-                    #     info(f"Page {page.data.page_num}")
-                    #     info(page.data_step1.print())
-
                 if doc.step2_done():
                     dump_step2_results(doc)
                     documents.remove(doc)
