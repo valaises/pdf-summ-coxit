@@ -3,6 +3,7 @@ import queue
 from queue import Queue
 
 from core.args import parse_args
+from core.fmt_output import format_output
 from core.globals import BASE_DIR
 from core.summarizer.step1 import create_ticket_step1, post_step1_heuristics, dump_step1_results
 from core.summarizer.step2 import dump_step2_results, create_ticket_step2
@@ -72,7 +73,7 @@ def main():
                     dump_step2_results(doc)
                     documents.remove(doc)
                     info(f"Document {doc.path.name} was processed")
-
+                    format_output(args.target_dir)
 
     except KeyboardInterrupt:
         info("Gracefully shutting down")

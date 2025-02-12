@@ -49,6 +49,11 @@ SP_summarize_section_and_parts: >
   1. Summarize the section (all pages) in one sentence
   2. Localize other Level-1 parts and summarize them as well (one sentence for each)
   
+  When summarizing "PART 2" parts, make emphasis on Materials, as PART 2 is often about materials
+  part 2 - products is essential.
+  
+  Start Summary with a verb!
+  
   Your OUTPUT must be ONLY a valid JSON format without any commands or backquotes or explanations, as your output will be read by a machine:
   {"section_summary": "...", "parts": [{"part_name": "PART 1 - XXX", "part_summary": "..."}]}
   
@@ -60,5 +65,10 @@ USER_summarize_section_and_parts: >
   1. Summarize the section (all pages) in one sentence
   2. Localize other Level-1 parts and summarize them as well (one sentence for each)
   
+  When summarizing "PART 2" parts, make emphasis on Materials, as PART 2 is often about materials
+  part 2 - products is essential.
+
+  Start Summary with a verb!
+
   Your OUTPUT must be ONLY a valid JSON format without any commands or backquotes or explanations, as your output will be read by a machine:
   {"section_summary": "...", "parts": [{"part_name": "PART 1 - XXX", "part_summary": "..."}]}
