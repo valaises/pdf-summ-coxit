@@ -19,7 +19,7 @@ __all__ = ['spawn_summarizer']
 
 async def process_ticket(q, ticket: SummarizeTicket, model_list: List[ModelInfo]):
     data = []
-    stream = await llm_completion(ticket.post, model_list)
+    stream = llm_completion(model_list, ticket.post)
     async for chunk in stream:
         data.append(chunk)
 
