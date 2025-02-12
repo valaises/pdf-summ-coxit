@@ -77,3 +77,19 @@ Todo
 ## Getting results
 
 After each document is processed, `output.csv` and `output_parts.csv` are automatically re-generated in a directory specified by the `-d` `--output_dir` argument.
+
+
+## Evaluation
+1. Copy PDFs from dataset into dataset
+```bash
+mkdir dataset && cp /path/to/your/pdfs/* dataset 
+```
+2. Run eval.py
+```bash
+python tests/eval.py
+```
+3. Run summarizer
+```bash
+uv run src/core/main.py -d dataset
+```
+As PDFs getting processed, watch terminal for results and `output.csv`, `output_parts.csv` in `dataset`
