@@ -1,8 +1,8 @@
-## PDF Summarizer for COXIT
+## PDF Summarizer for [COXIT](https://coxit.co/)
 
 A powerful tool for automated PDF document processing and summarization using LLM models. The tool processes PDF documents, extracts their content, and generates structured summaries using advanced language models.
 
-Note: Tool is specifically designed for COXIT documents and won't be of use for generic PDF documents.
+Note: Tool is specifically designed for [COXIT](https://coxit.co/) documents and won't be of use for generic PDF documents.
 ## Features
 
 - 📄 Automated PDF document processing
@@ -25,9 +25,9 @@ wget -qO- https://astral.sh/uv/install.sh | sh
 git clone https://github.com/valaises/pdf-summ-coxit.git
 ```
 
-3. Run the installation script
+3. Install
 ```bash
-sh scripts/install.sh
+uv sync && uv pip install -e .
 ```
 
 4. Set environmental variables
@@ -60,6 +60,10 @@ cp documents/* /path/to/your/pdfs
 - `-d` `--target-dir`: Directory to monitor for PDF files (required)
 - `--debug`: Enable debug logging (optional)
 
+## Docker Usage 
+
+Todo
+
 ## How It Works
 
 #### The tool operates in a pipeline:
@@ -69,7 +73,6 @@ cp documents/* /path/to/your/pdfs
 3. **Step 1**: Initial content analysis and section detection
 4. **Step 2**: Section-based summarization
 5. **Output Formatting**: Generates structured CSV output
-
 
 ## Getting results
 
