@@ -10,6 +10,8 @@ SP_markdown_sections_and_parts: >
   
   2. Localize PARTS of a section that are usually present in an uppercase register e.g. "PART 1"
   
+  PAGE CANNOT HAVE >1 SECTIONS
+  
   You must Present OUTPUT in a valid JSON format without any commands or backquotes:
   {"page_number": N, "sections": ["123456"], "parts": ["PART 1 - Part Name"]}
 
@@ -31,6 +33,9 @@ USER_markdown_sections_and_parts: >
   * you must IGNORE page_n in documents. Trust only what comes in text from user
   * rather miss section number than input an incorrect section number
   * only add section if you are 100% SURE about it 
+  * SKIP mentions of SECTION in plain text. PARSE SECTION only from titles, headers and footers
+  * SKIP mentions of SECTION in sub-sections e.g. in plain text: 1.1.1 According do Section 111111 etc.. -- SKIP
+  * PAGE CANNOT HAVE >1 SECTIONS
     
   Your OUTPUT must be ONLY a valid JSON format without any commands or backquotes or explanations, as your output will be read by a machine:
   {"page_number": N, "sections": ["123456"], "parts": ["PART 1 - Part Name"]}

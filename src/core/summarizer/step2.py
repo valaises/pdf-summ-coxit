@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from queue import Queue
 from typing import List, Dict, Any
 
-from core.globals import SUMMARIZER_MODEL, STEP2_DUMP_FILE
+from core.globals import SUMMARIZER_MODEL, STEP2_DUMP_FILE, SUMMARIZER_FALLBACK_MODEL
 from core.logger import warn
 from core.pdf_document import PDFDocument, PDFDocumentDataItemStep2Part, PDFDocumentDataItemStep2
 from core.prompts import Prompts
@@ -25,8 +25,6 @@ def pp(ticket: SummarizeStep2Ticket, res: List[Dict[str, Any]], q: Queue):
     ch0 = r["choices"][0]
     content = ch0["message"]["content"]
 
-    ticket.post.messages.append(ChatMessage(role="assistant", content=content))
-
     try:
         content = content.replace("```json\n", "").replace("\n```", "")
         d = json.loads(content)
@@ -39,10 +37,13 @@ def pp(ticket: SummarizeStep2Ticket, res: List[Dict[str, Any]], q: Queue):
             ) for p in parts
         ]
     except Exception as e:
-        err = f"Failed to parse answer. Error: {e}"
-        ticket.post.messages.append(
-            ChatMessage(role="user", content=err)
-        )
+        err = f"Failed to parse answer. Error:\n{e}"
+        messages = [
+            ChatMessage(role="assistant", content=content),
+            ChatMessage(role="user", content=f"{err}\nTry again, minding JSON format!")
+        ]
+        ticket.post.messages = messages
+        ticket.post.model = SUMMARIZER_FALLBACK_MODEL
         warn(err)
         q.put(ticket)
         return

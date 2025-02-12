@@ -64,6 +64,13 @@ def pp(ticket: SummarizeStep1Ticket, res: List[Dict[str, Any]], q: Queue):
             {"page_number": ticket.page.data.page_num, "sections": sections, "parts": parts}))
     )
 
+    if len(sections) > 1:
+        ticket.post.messages.append(
+            ChatMessage(role="user", content="Error: there only could be 1 section in a page")
+        )
+        q.put(ticket)
+        return
+
     if any(not re.match(r'^\d{6}$', str(s)) for s in sections):
         ticket.post.messages.append(
             ChatMessage(role="user", content="Error: section must be always a 6-digit number")
@@ -131,6 +138,12 @@ def create_ticket_step1(
 
 def post_step1_heuristics(doc: PDFDocument):
     for page in doc:
+        if prev := page.prev:
+            if prev.data_step1.sections != page.data_step1.sections:
+                if any(re.search(r'part\s+(?:[2-9]|[1-9]\d+)', p, re.IGNORECASE) for p in page.data_step1.parts):
+                    page.data_step1.sections = []
+
+    for page in doc:
         page.data_step1.sections = list(set(page.data_step1.sections))
         page.data_step1.parts = list(set(page.data_step1.parts))
 
@@ -148,7 +161,7 @@ def post_step1_heuristics(doc: PDFDocument):
         if idx == 1:
             pass
 
-        elif any(["PART 1" in p for p in page.data_step1.parts]):
+        elif any(re.search(r"part\s+1\b", p, re.IGNORECASE) for p in page.data_step1.parts):
             section_n += 1
 
         elif prev := page.prev:
