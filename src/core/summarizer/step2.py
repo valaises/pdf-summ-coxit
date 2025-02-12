@@ -10,7 +10,7 @@ from core.pdf_document import PDFDocument, PDFDocumentDataItemStep2Part, PDFDocu
 from core.prompts import Prompts
 from core.summarizer.summ_utils import SummarizeTicket, create_page_message
 
-from llm_completion.completion import ChatMessage, CompletionPost
+from llm_completion.completion import ChatMessage, CompletionPayload
 
 
 @dataclass
@@ -80,7 +80,7 @@ def create_ticket_step2(
         ChatMessage(role="user", content=prompts.USER_summarize_section_and_parts)
     )
 
-    post = CompletionPost(
+    post = CompletionPayload(
         model=SUMMARIZER_MODEL,
         messages=messages,
         stream=False,

@@ -11,7 +11,7 @@ from core.pdf_document import PDFPage, PDFDocument
 from core.prompts import Prompts
 from core.summarizer.summ_utils import SummarizeTicket, create_page_message, most_frequent, create_content_pdf
 
-from llm_completion.completion import CompletionPost, ChatMessage
+from llm_completion.completion import CompletionPayload, ChatMessage
 
 
 @dataclass
@@ -124,7 +124,7 @@ def create_ticket_step1(
 
     messages.append(ChatMessage(role="user", content=prompts.USER_markdown_sections_and_parts))
 
-    post = CompletionPost(
+    post = CompletionPayload(
         model=SUMMARIZER_MODEL,
         messages=messages,
         stream=False,

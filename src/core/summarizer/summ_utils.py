@@ -4,13 +4,13 @@ from collections import Counter
 from typing import Callable, List, Any, Dict
 
 from core.pdf_document import PDFPage
-from llm_completion.completion import CompletionPost, ChatMessage
+from llm_completion.completion import CompletionPayload, ChatMessage
 
 
 @dataclass
 class SummarizeTicket:
     pp: Callable[[Any, List[Dict[str, Any]], Queue], None]
-    post: CompletionPost
+    post: CompletionPayload
 
 
 def create_content_pdf(p: PDFPage) -> Dict[str, str]:
