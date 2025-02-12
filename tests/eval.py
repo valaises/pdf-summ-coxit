@@ -9,7 +9,7 @@ from my_watchdog import spawn_watchdog
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-EXPECTED_JSON = BASE_DIR / "expected.json"
+EXPECTED_JSON = BASE_DIR/ "tests" / "expected.json"
 DATASET = BASE_DIR / "dataset"
 STEP1_FILE = BASE_DIR / ".step1.jsonl"
 

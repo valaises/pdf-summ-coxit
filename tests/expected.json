@@ -1,0 +1,152 @@
+[
+    {
+        "file_name": "123200 - BAUGO Schools_original.pdf",
+        "sections": [
+            {
+                "section": "123200",
+                "page_start": 1,
+                "page_end": 3
+            }
+        ]
+    },
+    {
+        "file_name": "123200 - Myrtue Medical Center_original.pdf",
+        "sections": [
+            {
+                "section": "123200",
+                "page_start": 1,
+                "page_end": 14
+            }
+        ]
+    },
+    {
+        "file_name": "123200 - R0843_original.pdf",
+        "sections": [
+            {
+                "section": "123200",
+                "page_start": 1,
+                "page_end": 8
+            }
+        ]
+    },
+    {
+        "file_name": "123216 - Contract RP24812_original.pdf",
+        "sections": [
+            {
+                "section": "123216",
+                "page_start": 1,
+                "page_end": 7
+            }
+        ]
+    },
+    {
+        "file_name": "123216 - R0733.pdf",
+        "sections": [
+            {
+                "section": "123216",
+                "page_start": 1,
+                "page_end": 8
+            }
+        ]
+    },
+    {
+        "file_name": "123216 - R0835_original.pdf",
+        "sections": [
+            {
+                "section": "123216",
+                "page_start": 1,
+                "page_end": 7
+            }
+        ]
+    },
+    {
+        "file_name": "123216 - Westfield Middle School_original.pdf",
+        "sections": [
+            {
+                "section": "123216",
+                "page_start": 1,
+                "page_end": 8
+            }
+        ]
+    },
+    {
+        "file_name": "123219 - Florence Fire Station_original.pdf",
+        "sections": [
+            {
+                "section": "123219",
+                "page_start": 1,
+                "page_end": 7
+            }
+        ]
+    },
+    {
+        "file_name": "Combined.pdf",
+        "sections": [
+            {
+                "section": "123216",
+                "page_start": 1,
+                "page_end": 6
+            },
+            {
+                "section": "123216",
+                "page_start": 7,
+                "page_end": 17
+            }
+        ]
+    },
+    {
+        "file_name": "Q1232_original.pdf",
+        "sections": [
+            {
+                "section": "123216",
+                "page_start": 1,
+                "page_end": 7
+            }
+        ]
+    },
+    {
+        "file_name": "R0476 Spec.pdf",
+        "sections": [
+            {
+                "section": "062000",
+                "page_start": 1,
+                "page_end": 2
+            },
+            {
+                "section": "123200",
+                "page_start": 3,
+                "page_end": 8
+            }
+        ]
+    },
+    {
+        "file_name": "R0481 - 1100 spec.pdf",
+        "sections": [
+            {
+                "section": "123200",
+                "page_start": 1,
+                "page_end": 10
+            }
+        ]
+    },
+    {
+        "file_name": "S0102.pdf",
+        "sections": [
+            {
+                "section": "064116",
+                "page_start": 1,
+                "page_end": 12
+            },
+            {
+                "section": "105123",
+                "page_start": 13,
+                "page_end": 22
+            },
+            {
+                "section": "123623",
+                "page_start": 23,
+                "page_end": 29
+            }
+        ]
+    }
+]
