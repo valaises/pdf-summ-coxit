@@ -70,18 +70,18 @@ After each document is processed, `output.csv` and `output_parts.csv` are automa
 export GEMINI_API_KEY =
 export OPENAI_API_KEY = 
 ```
-1. Copy PDFs from dataset into dataset dir
+2. Copy PDFs from dataset into dataset dir
 ```bash
 mkdir ~/code/pdf-summ-coxit/dataset && cp /path/to/your/pdfs/* ~/code/pdf-summ-coxit/dataset 
 ```
-2. Run eval.py
+3. Run eval.py
 ```bash
 cd ~/code/pdf-summ-coxit/dataset
 ```
 ```bash
 python tests/eval.py
 ```
-3. Run summarizer
+4. Run summarizer
 ```bash
 python -m src.core.main -d dataset
 ```
