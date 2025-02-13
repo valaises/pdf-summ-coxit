@@ -40,11 +40,6 @@ export OPENAI_API_KEY =
 python -m src.core.main -d /path/to/your/pdfs
 ```
 
-6. Place your PDF documents in a target directory e.g.
-```
-cp documents/* /path/to/your/pdfs
-```
-
 ### Command Line Arguments
 
 - `-d` `--target-dir`: Directory to monitor for PDF files (required)
@@ -75,11 +70,14 @@ After each document is processed, `output.csv` and `output_parts.csv` are automa
 export GEMINI_API_KEY =
 export OPENAI_API_KEY = 
 ```
-1. Copy PDFs from dataset into dataset
+1. Copy PDFs from dataset into dataset dir
 ```bash
-mkdir dataset && cp /path/to/your/pdfs/* dataset 
+mkdir ~/code/pdf-summ-coxit/dataset && cp /path/to/your/pdfs/* ~/code/pdf-summ-coxit/dataset 
 ```
 2. Run eval.py
+```bash
+cd ~/code/pdf-summ-coxit/dataset
+```
 ```bash
 python tests/eval.py
 ```
@@ -87,4 +85,4 @@ python tests/eval.py
 ```bash
 python -m src.core.main -d dataset
 ```
-As PDFs getting processed, watch terminal for results and `output.csv`, `output_parts.csv` in `dataset`
+As PDFs getting processed, watch STDOUT of `eval.py` for results and `output.csv`, `output_parts.csv` in `~/code/pdf-summ-coxit/dataset`
