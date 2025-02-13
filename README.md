@@ -10,7 +10,17 @@ Note: Tool is specifically designed for [COXIT](https://coxit.co/) documents and
 - 🤖 LLM-powered content summarization
 - 📊 Structured output in CSV format
 - 👀 Real-time document monitoring
-- 🚀 Multi-threaded processing pipeline
+- 🚀 Multi-threaded & asynchronous processing pipeline
+
+## How It Works
+
+#### The tool operates in a pipeline:
+
+1. **Document Monitoring**: Watches the target directory for new PDF files
+2. **PDF Processing**: Extracts and processes text from PDF documents
+3. **Step 1**: Initial content analysis and section detection
+4. **Step 2**: Section-based summarization
+5. **Output Formatting**: Generates structured CSV output
 
 ## On-Device Installation & Usage
 1. Install uv
@@ -46,18 +56,44 @@ python -m src.core.main -d /path/to/your/pdfs
 - `--debug`: Enable debug logging (optional)
 
 ## Docker Usage 
+(assuming docker is installed)
 
-Todo
+1. Build an image
+```bash
+cd ~/code/pdf-summ-coxit
+```
+```bash
+docker buid -t pdf-summ .
+```
+2. Specify variables in .env
+```
+cp .env.example .env
+```
+```
+vim .env
+```
+3. Start container (detached mode)
+```bash
+docker run -d --env-file .env -v /path/to/your/pdfs:/app/target_dir pdf-summ
+```
 
-## How It Works
-
-#### The tool operates in a pipeline:
-
-1. **Document Monitoring**: Watches the target directory for new PDF files
-2. **PDF Processing**: Extracts and processes text from PDF documents
-3. **Step 1**: Initial content analysis and section detection
-4. **Step 2**: Section-based summarization
-5. **Output Formatting**: Generates structured CSV output
+## Docker Compose Usage
+(assuming docker & docker compose are installed)
+1. Set ENV variables in .env & .env.compose 
+```bash
+cp .env.example .env
+cp .env.compose .env.compose
+```
+```bash
+vim .env
+```
+```bash
+vim .env.compose
+```
+2. Start container (detached mode)
+```bash
+docker compose --env-file .env.compose up
+```
 
 ## Getting results
 
