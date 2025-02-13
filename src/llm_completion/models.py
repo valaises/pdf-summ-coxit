@@ -74,11 +74,11 @@ def get_model_list(base_dir: Path) -> List[ModelInfo]:
     for m in all_models:
         if not (p := next((p for p in providers if p.name == m.provider), None)):
             error(f"model {m.name}: provider {m.provider} not found. SKIPPING")
-            continue
+            quit(0)
 
         if p.env and not os.environ.get(p.env):
             error(f"model {m.name}: provider {m.provider} env {p.env} not set. SKIPPING")
-            continue
+            quit(0)
 
         filtered_models.append(m)
 
