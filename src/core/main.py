@@ -27,13 +27,13 @@ def main():
     process_q, summ_q = Queue(), Queue()
     documents = []
 
+    model_list = get_model_list(BASE_DIR)
+    prompts = load_prompts(BASE_DIR)
+
+    w_stop_event = spawn_watchdog(process_q, args.target_dir)
+    s_stop_event = spawn_summarizer(summ_q, model_list)
+
     try:
-        model_list = get_model_list(BASE_DIR)
-        prompts = load_prompts(BASE_DIR)
-
-        w_stop_event = spawn_watchdog(process_q, args.target_dir)
-        s_stop_event = spawn_summarizer(summ_q, model_list)
-
         while True:
             try:
                 file_path = process_q.get(timeout=0.5)
