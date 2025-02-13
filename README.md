@@ -3,6 +3,9 @@
 A powerful tool for automated PDF document processing and summarization using LLM models. The tool processes PDF documents, extracts their content, and generates structured summaries using advanced language models.
 
 Note: Tool is specifically designed for [COXIT](https://coxit.co/) documents and won't be of use for generic PDF documents.
+
+Note: Paid GEMINI Plan is recommended as it has higher rate limits
+
 ## Features
 
 - 📄 Automated PDF document processing
