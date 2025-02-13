@@ -4,7 +4,7 @@ from pathlib import Path
 import pandas as pd
 
 from core.logger import info
-from globals import STEP1_DUMP_FILE, STEP2_DUMP_FILE
+from core.globals import STEP1_DUMP_FILE, STEP2_DUMP_FILE
 
 
 def format_output(target_dir: Path):
