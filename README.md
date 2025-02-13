@@ -82,7 +82,7 @@ docker run -d --env-file .env -v /path/to/your/pdfs:/app/target_dir pdf-summ
 1. Set ENV variables in .env & .env.compose 
 ```bash
 cp .env.example .env
-cp .env.compose .env.compose
+cp .env.compose.example .env.compose
 ```
 ```bash
 vim .env
