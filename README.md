@@ -25,29 +25,19 @@ wget -qO- https://astral.sh/uv/install.sh | sh
 git clone https://github.com/valaises/pdf-summ-coxit.git
 ```
 
-3. Install
+3. Install pdf-summ-coxit
 ```bash
-uv sync && uv pip install -e .
+uv sync && pip install -e .
 ```
-
-4. Set environmental variables
+4. Set ENV variables
 ```bash
-cp .env.example .env
-```
-
-```bash
-#.env
-
-GEMINI_API_KEY =
-OPENAI_API_KEY = 
-```
-```
-source .env
+export GEMINI_API_KEY =
+export OPENAI_API_KEY = 
 ```
 
 5. Run the summarizer
 ```bash
-uv run src/core/main.py -d /path/to/your/pdfs
+python -m src.core.main -d /path/to/your/pdfs
 ```
 
 6. Place your PDF documents in a target directory e.g.
@@ -80,6 +70,11 @@ After each document is processed, `output.csv` and `output_parts.csv` are automa
 
 
 ## Evaluation
+1. export ENV variables
+```bash
+export GEMINI_API_KEY =
+export OPENAI_API_KEY = 
+```
 1. Copy PDFs from dataset into dataset
 ```bash
 mkdir dataset && cp /path/to/your/pdfs/* dataset 
@@ -90,6 +85,6 @@ python tests/eval.py
 ```
 3. Run summarizer
 ```bash
-uv run src/core/main.py -d dataset
+python -m src.core.main -d dataset
 ```
 As PDFs getting processed, watch terminal for results and `output.csv`, `output_parts.csv` in `dataset`
