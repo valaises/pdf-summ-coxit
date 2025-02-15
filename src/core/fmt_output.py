@@ -46,9 +46,35 @@ def format_output(target_dir: Path):
         key = (row['file_name'], row['section'], row['section_n'])
         row['section_summary'] = summaries.get(key, '')
 
+    usages = []
     parts_rows = []
     for obj in s2_rows:
+        usage = obj['usage']
         file_name = obj['file_name']
+
+        usage_cost = 0.
+        tokens_in = sum(c["tokens_in"] for c in usage["calls"])
+        tokens_out = sum(c["tokens_out"] for c in usage["calls"])
+
+        try:
+            usage_cost = sum([
+                c["tokens_in"] / 1_000_000 * c["dollars_input"] + c["tokens_out"] / 1_000_000 * c["dollars_output"]
+                for c in usage["calls"]
+            ])
+        except ZeroDivisionError:
+            pass
+
+        usage = {
+            "file_name": file_name,
+            "finished_in": f'{usage["finished_in_s"]:.2f}s',
+            "models": list({c["model_name"] for c in usage["calls"]}),
+            "calls": len(usage["calls"]),
+            "tokens_in": tokens_in,
+            "tokens_out": tokens_out,
+            "cost": f"${usage_cost:.5f}",
+        }
+        usages.append(usage)
+
         for summary in obj['summaries']:
             section = summary['section']
             section_n = summary.get('section_n', '')  # Get section_n from s2_rows summary
@@ -63,15 +89,21 @@ def format_output(target_dir: Path):
 
     sections_df = pd.DataFrame(sections_rows).sort_values(['file_name', 'page_start'])
     parts_df = pd.DataFrame(parts_rows).sort_values(['file_name', 'section', 'section_n', 'part'])
+    usage_df = pd.DataFrame(usages).sort_values(['file_name'])
 
-    output_csv = target_dir / 'output.csv'
-    parts_csv = target_dir / 'output_parts.csv'
+    artifacts = target_dir / 'artifacts'
+    artifacts.mkdir(parents=True, exist_ok=True)
+
+    output_csv = artifacts / 'output.csv'
+    parts_csv = artifacts / 'output_parts.csv'
+    usage_csv = artifacts / 'usage.csv'
 
     sections_df.to_csv(str(output_csv), index=False)
     info(f"Saved output to {output_csv}")
     parts_df.to_csv(str(parts_csv), index=False)
     info(f"Saved output_parts to {parts_csv}")
-
+    usage_df.to_csv(str(usage_csv), index=False)
+    info(f"Saved output_usage to {usage_csv}")
 
 
 def convert_s1_to_output(input_data):

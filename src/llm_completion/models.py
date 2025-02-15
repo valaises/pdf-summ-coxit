@@ -8,7 +8,7 @@ from pathlib import Path
 from core.logger import error
 
 
-__all__ = ["ModelInfo", "get_model_list"]
+__all__ = ["ModelInfo", "get_model_list", "resolve_model_record"]
 
 
 @dataclass
@@ -23,8 +23,8 @@ class ModelInfo:
     resolve_as: str
     context_window: int
     max_output_tokens: int
-    price_points_input: int
-    price_points_output: int
+    dollars_input: int
+    dollars_output: int
     tokens_per_minute: Optional[int]
     request_per_minute: Optional[int]
 
@@ -42,8 +42,8 @@ def _models_info(base_dir: Path) -> List[ModelInfo]:
             resolve_as=model_info["resolve_as"],
             context_window=model_info["context_window"],
             max_output_tokens=model_info["max_output_tokens"],
-            price_points_input=model_info["price_points_input"],
-            price_points_output=model_info["price_points_output"],
+            dollars_input=model_info["dollars_input"],
+            dollars_output=model_info["dollars_output"],
             tokens_per_minute=model_info.get("tpm"),
             request_per_minute=model_info.get("rpm"),
         )
@@ -83,3 +83,9 @@ def get_model_list(base_dir: Path) -> List[ModelInfo]:
         filtered_models.append(m)
 
     return filtered_models
+
+
+def resolve_model_record(model_name: str, model_list: List[ModelInfo]) -> ModelInfo:
+    for model in model_list:
+        if model.name == model_name:
+            return model
