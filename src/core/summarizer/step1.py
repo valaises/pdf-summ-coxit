@@ -91,6 +91,7 @@ def pp(ticket: SummarizeStep1Ticket, res: List[Dict[str, Any]], q: Queue):
 
 
 def create_ticket_step1(
+        doc: PDFDocument,
         page: PDFPage,
         prompts: Prompts,
         pages_before: int = 0, pages_after: int = 0
@@ -133,7 +134,7 @@ def create_ticket_step1(
         temperature=0.6,
     )
 
-    return SummarizeStep1Ticket(pp, post, page)
+    return SummarizeStep1Ticket(pp, post, doc, page)
 
 
 def post_step1_heuristics(doc: PDFDocument):
@@ -185,7 +186,6 @@ def dump_step1_results(doc: PDFDocument):
             } for page in doc
         ]
     }
-    print(data)
 
     with STEP1_DUMP_FILE.open("a") as f:
         f.write(json.dumps(data) + "\n")

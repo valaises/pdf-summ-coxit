@@ -5,8 +5,8 @@
       "resolve_as": "gpt-4o-2024-11-20",
       "context_window": 128000,
       "max_output_tokens": 16384,
-      "price_points_input": 2500,
-      "price_points_output": 10000,
+      "dollars_input": 2.5,
+      "dollars_output": 10.0,
       "tpm": 30000,
       "rpm": 500
     }
@@ -17,8 +17,8 @@
       "resolve_as": "gemini/gemini-2.0-flash",
       "context_window": 1000000,
       "max_output_tokens": 32000,
-      "price_points_input": 100,
-      "price_points_output": 400,
+      "dollars_input": 0.1,
+      "dollars_output": 0.4,
       "tpm": 4000000,
       "rpm": 2000
     }

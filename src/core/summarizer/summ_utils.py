@@ -3,7 +3,7 @@ from queue import Queue
 from collections import Counter
 from typing import Callable, List, Any, Dict
 
-from core.pdf_document import PDFPage
+from core.pdf_document import PDFPage, PDFDocument
 from llm_completion.completion import CompletionPayload, ChatMessage
 
 
@@ -11,6 +11,7 @@ from llm_completion.completion import CompletionPayload, ChatMessage
 class SummarizeTicket:
     pp: Callable[[Any, List[Dict[str, Any]], Queue], None]
     post: CompletionPayload
+    doc: PDFDocument
 
 
 def create_content_pdf(p: PDFPage) -> Dict[str, str]:

@@ -11,11 +11,11 @@ from core.prompts import Prompts
 from core.summarizer.summ_utils import SummarizeTicket, create_page_message
 
 from llm_completion.completion import ChatMessage, CompletionPayload
+from llm_completion.models import ModelInfo, resolve_model_record
 
 
 @dataclass
 class SummarizeStep2Ticket(SummarizeTicket):
-    doc: PDFDocument
     section_n: int
     section: str
 
@@ -92,7 +92,7 @@ def create_ticket_step2(
     return SummarizeStep2Ticket(pp, post, doc, section_n, section)
 
 
-def dump_step2_results(doc: PDFDocument):
+def dump_step2_results(doc: PDFDocument, model_list: List[ModelInfo]):
     data = {
         "file_path": str(doc.path),
         "file_name": doc.path.name,
@@ -111,7 +111,23 @@ def dump_step2_results(doc: PDFDocument):
                 ]
             }
             for d in doc.data_step2
-        ]
+        ],
+
+        "usage": {
+            "finished_in_s": round(doc.usage.ts_end - doc.usage.ts_start, 3),
+            "calls": [
+                {
+                    "model_name": c.model_name,
+                    "finished_in_s": round(c.ts_end - c.ts_start, 3),
+                    "tokens_in": c.tokens_in,
+                    "tokens_out": c.tokens_out,
+                    "dollars_input": resolve_model_record(c.model_name, model_list).dollars_input,
+                    "dollars_output": resolve_model_record(c.model_name, model_list).dollars_output,
+                }
+                for c in doc.usage.calls
+            ]
+        }
+
     }
 
     with STEP2_DUMP_FILE.open("a") as f:

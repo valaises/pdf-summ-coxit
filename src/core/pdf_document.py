@@ -4,6 +4,22 @@ from typing import Optional, Iterator, List
 
 
 @dataclass
+class ModelCallUsage:
+    model_name: str
+    ts_start: float
+    tokens_in: int = 0
+    tokens_out: int = 0
+    ts_end: Optional[float] = None
+
+
+@dataclass
+class PDFDocumentUsage:
+    ts_start: Optional[float] = None
+    ts_end: Optional[float] = None
+    calls: List[ModelCallUsage] = field(default_factory=list)
+
+
+@dataclass
 class PDFError:
     text: str
     recoverable: bool
@@ -66,6 +82,7 @@ class PDFDocument(PDFBase):
         self.pages_cnt = 0
         self.data_step2: List[PDFDocumentDataItemStep2] = []
         self.step1_set: bool = False
+        self.usage = PDFDocumentUsage()
         self.__head: Optional[PDFPage] = None
 
     def insert_page(self, page: PDFPage) -> None:

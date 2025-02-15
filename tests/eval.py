@@ -1,3 +1,4 @@
+import argparse
 import json
 
 from pathlib import Path
@@ -10,17 +11,27 @@ from my_watchdog import spawn_watchdog
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 EXPECTED_JSON = BASE_DIR/ "tests" / "expected.json"
-DATASET = BASE_DIR / "dataset"
 STEP1_FILE = BASE_DIR / ".step1.jsonl"
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--target_dir", required=True, type=Path)
+    args = parser.parse_args()
+
+    target_dir: Path = args.target_dir
+    if not target_dir.is_absolute():
+        target_dir = BASE_DIR / target_dir
+        print(f"target dir '{args.target_dir}' -> '{target_dir}' (completed to absolute path)")
+
+    dataset_dir = args.target_dir
+    
     print("test started")
     assert EXPECTED_JSON.is_file(), f"Expected JSON file not found: {EXPECTED_JSON}"
-    assert DATASET.is_dir(), f"Dataset directory not found: {DATASET}"
+    assert dataset_dir.is_dir(), f"Dataset directory not found: {dataset_dir}"
 
-    dataset_files = [f for f in DATASET.iterdir() if f.is_file() and f.suffix == ".pdf"]
-    assert dataset_files, f"No PDF files found in the dataset directory: {DATASET}"
+    dataset_files = [f for f in dataset_dir.iterdir() if f.is_file() and f.suffix == ".pdf"]
+    assert dataset_files, f"No PDF files found in the dataset directory: {dataset_dir}"
 
     expected = json.loads(EXPECTED_JSON.read_text())
     # assuming core is already up and running

@@ -1,4 +1,5 @@
 import queue
+import time
 
 from queue import Queue
 
@@ -40,6 +41,7 @@ def main():
 
                 doc = PDFDocument(file_path)
                 info(f"processing PDF {doc.path.name} ...")
+                doc.usage.ts_start = time.time()
                 process_pdf(doc)
 
                 if doc.has_unrecoverable_errors():
@@ -49,7 +51,7 @@ def main():
                     warn(f"Some pages in {doc.path.name} have unrecoverable errors. SKIPPING the document")
                     continue
 
-                [summ_q.put(create_ticket_step1(page, prompts)) for page in doc]
+                [summ_q.put(create_ticket_step1(doc, page, prompts)) for page in doc]
 
                 documents.append(doc)
 
@@ -70,7 +72,8 @@ def main():
                         summ_q.put(ticket)
 
                 if doc.step2_done():
-                    dump_step2_results(doc)
+                    doc.usage.ts_end = time.time()
+                    dump_step2_results(doc, model_list)
                     documents.remove(doc)
                     info(f"Document {doc.path.name} was processed")
                     format_output(args.target_dir)
