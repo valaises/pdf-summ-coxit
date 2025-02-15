@@ -103,7 +103,7 @@ docker compose --env-file .env.compose up
 After each document is processed, `output.csv`, `output_parts.csv`, and `usage.csv` are automatically re-generated in `artifacts` inside a directory specified by the `-d` `--output_dir` argument.
 
 #### Notes about `usage`: 
-* N-requests needed to summarize a document is most cases is: page_count + 1
+* N-requests needed to summarize a document in most cases is: page_count + 1
 * Model is generally `gemini-2`, unless it fails to generate JSON, then it's `gpt-4o`
 * time needed to summarize all documents != sum(t for t in doc.usage), as documents are processed asynchronously
 * cost is calculated using data provided in `assets/model_list.json`
