@@ -139,11 +139,18 @@ As PDFs getting processed, watch STDOUT of `eval.py` for results and `output.csv
 
 ## Evaluation, docker / compose
 
+
+
+
 1. Start container (see docker / docker-compose usage)
 2. Inside a container, run eval.py
 ```bash
 docker exec -it <container_name> bash
 ```
-```
+
+```bash
 python tests/eval.py -d target_dir
 ```
+
+#### Video: how to run eval
+https://github.com/user-attachments/assets/6fb0b2b9-6a17-4b9e-afd9-79b377d1e8aa
